@@ -4,8 +4,6 @@
 
 int** createArray(int dimension)
 {
-
-	srand(time(NULL));
 	int* values = calloc(dimension*dimension, sizeof(int));
 	int** rows  = malloc(dimension*sizeof(int*));
 	
@@ -95,7 +93,9 @@ void printFunc(int** matrix, int size)
 
 int main()
 {
-	int size = 5;
+    srand(time(NULL));
+    
+	int size = 10;
 
 	int** Array1 = createArray(size);
 	printFunc(Array1, size);
@@ -109,10 +109,10 @@ int main()
 	int** C2 = rank2TensorMult(Array1, Array2, size);
 	printFunc(C2, size);
 	
-	destroyArray(Array1, size);
-	destroyArray(Array2, size);
-	destroyArray(C1, size);
-	destroyArray(C2, size);
+//    destroyArray(Array1, size);
+//    destroyArray(Array2, size);
+//    destroyArray(C1, size);
+//    destroyArray(C2, size);
 	printf("hello world");
 	
 	return 0;
