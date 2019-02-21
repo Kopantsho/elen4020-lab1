@@ -27,7 +27,6 @@ int** create2DArray(int dimension)
 
 int*** create3DArray(int rank)
 {
-	int dimension = 3;
 	int*** matrix = (int***)malloc(rank*sizeof(int**));
 
 	for (int row = 0; row < rank; row++)
@@ -50,7 +49,6 @@ int*** create3DArray(int rank)
 			}
 		}
 	}
-	//int* values = calloc(pow(rank, dimension), sizeof(int));
 	
 return matrix;
 
@@ -109,6 +107,36 @@ int** rank2TensorMult(int** A, int** B, int N)
 	
 	return result;
 }
+
+int*** rank3TensorAdd(int*** A, int*** B, int rank)
+{
+	int*** result = (int***)malloc(rank*sizeof(int**));
+
+		for (int row = 0; row < rank; row++)
+	{
+		result[row] = (int**)malloc(rank*sizeof(int*));
+
+		for (int column = 0; column < rank; column++)
+		{
+			result[row][column] = (int*)malloc(rank*sizeof(int));
+		}
+	}
+
+	
+	for (int depth = 0; depth < rank; depth++)
+	{
+		for (int row= 0; row < rank; row++)
+		{
+			for (int column = 0; column < rank; column++)
+			{
+				result[row][column][depth] = A[row][column][depth] + B[row][column][depth];
+			}
+		}
+	}
+
+return result;
+}
+
 void print3DFunc(int*** matrix, int rank)
 {
 	printf("This is a %d x %d x %d matric\n", rank, rank, rank);
@@ -148,8 +176,8 @@ int main()
 	// int** Array1 = create2DArray(size);
 	// printFunc(Array1, size);
 	
-	int** Array2 = create2DArray(size);
-	printFunc(Array2, size);
+	// int** Array2 = create2DArray(size);
+	// printFunc(Array2, size);
 	
 	// int** C1 = rank2TensorAdd(Array1, Array2, size);
 	// printFunc(C1, size);
@@ -160,8 +188,11 @@ int main()
 	int*** Array3 = create3DArray(size);
 	print3DFunc(Array3, size);
 	
+	int*** Array4 = create3DArray(size);
+	print3DFunc(Array4, size);
 
-
+	int*** C3 = rank3TensorAdd(Array3, Array4, size);
+	print3DFunc(C3, size);
 	
  //  destroy2DArray(Array1, size);
 //    destroy2DArray(Array2, size);
