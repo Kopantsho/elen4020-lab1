@@ -158,7 +158,7 @@ return result;
 		{
 			for (int row = 0; row < rank; row++)
 			{
-				result[row][column][depth] = A[depth][row][column] + B[row][depth][column];
+				result[row][column][depth] += A[depth][row][column]*B[row][depth][column];
 			}
 		}
 	}
