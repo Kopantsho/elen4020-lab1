@@ -39,11 +39,11 @@ int*** create3DArray(int rank)
 		}
 	}
 
-	for (int row = 0; row < rank; row++)
+	for (int depth = 0; depth < rank; depth++)
 	{
-		for (int column = 0; column < rank; column++)
+		for (int row = 0; row < rank; row++)
 		{
-			for (int depth = 0; depth < rank; depth++)
+			for (int column = 0; column < rank; column++)
 			{
 				matrix[row][column][depth] = rand()% 21;
 			}
@@ -154,11 +154,14 @@ return result;
 		
 	for (int depth = 0; depth < rank; depth++)
 	{
-		for (int column= 0; column < rank; column++)
+		for (int row= 0; row < rank; row++)
 		{
-			for (int row = 0; row < rank; row++)
+			for (int column = 0; column < rank; column++)
 			{
-				result[row][column][depth] += A[depth][row][column]*B[row][depth][column];
+				for (int u = 0; u < rank; u++)
+				{
+					result[row][column][depth] += A[row][u][depth]*B[u][column][depth];
+				}
 			}
 		}
 	}
@@ -170,11 +173,14 @@ void print3DFunc(int*** matrix, int rank)
 {
 	printf("This is a %d x %d x %d matrix\n", rank, rank, rank);
 
-	for (int row = 0; row < rank; row++)
+	for (int depth = 0; depth < rank; depth++)
 	{
-		for (int column = 0; column < rank; column++)
-		{
-			for (int depth = 0; depth < rank; depth++)
+		// printf("Layer %d", depth);
+		// printf("\n");
+
+		for (int row = 0; row < rank; row++)
+		{	
+			for (int column = 0; column < rank; column++)
 			{
 				printf("%d\t", matrix[row][column][depth]);
 			}
