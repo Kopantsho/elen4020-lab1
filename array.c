@@ -3,6 +3,10 @@
 #include <time.h>
 #include <math.h>
 
+typedef int bool;
+#define true 1
+#define false 0
+
 int** create2DArray(int dimension)
 {
 	int* values = calloc(dimension*dimension, sizeof(int));
@@ -21,8 +25,38 @@ int** create2DArray(int dimension)
 			rows[i][j] = rand() % 21; 
 		}
 	}
-	
-	return rows;
+
+	if (error_checking(rows, dimension))
+	{
+		EXIT_FAILURE;
+	}
+
+	else
+		return rows;
+}
+
+int error_checking (int** array, int dimension)
+{
+	for (int i = 0; i < dimension; i++)
+	{
+		for (int j = 0; j < dimension; j++)
+		{
+			if (array[i][j] < 0)
+			{
+				fprintf(stderr, "Random number less than 0");
+				return 1;
+			}
+
+			if (array[i][j] > 20)
+			{
+				fprintf(stderr, "Random number greater than 20");
+				return 1;
+			}
+		}
+	}
+
+	return 0;
+
 }
 
 int*** create3DArray(int rank)
@@ -208,8 +242,8 @@ int main()
     
 	int size = 3;
 
-	// int** Array1 = create2DArray(size);
-	// printFunc(Array1, size);
+	int** Array1 = create2DArray(size);
+	printFunc(Array1, size);
 	
 	// int** Array2 = create2DArray(size);
 	// printFunc(Array2, size);
@@ -220,17 +254,17 @@ int main()
 	// int** C2 = rank2TensorMult(Array1, Array2, size);
 	// printFunc(C2, size);
 
-	int*** Array3 = create3DArray(size);
-	print3DFunc(Array3, size);
+	// int*** Array3 = create3DArray(size);
+	// print3DFunc(Array3, size);
 	
-	int*** Array4 = create3DArray(size);
-	print3DFunc(Array4, size);
+	// int*** Array4 = create3DArray(size);
+	// print3DFunc(Array4, size);
 
 	// int*** C3 = rank3TensorAdd(Array3, Array4, size);
 	// print3DFunc(C3, size);
 
-	int*** C4 = rank3TensorMult(Array3, Array4, size);
-	print3DFunc(C4, size);
+	// int*** C4 = rank3TensorMult(Array3, Array4, size);
+	// print3DFunc(C4, size);
 	
  //  destroy2DArray(Array1, size);
 //    destroy2DArray(Array2, size);
