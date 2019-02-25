@@ -239,10 +239,10 @@ int main()
 {
     srand(time(NULL));
     
-	int size = 3;
+	int size = 10;
 
-	int** Array1 = create2DArray(size);
-	printFunc(Array1, size);
+	// int** Array1 = create2DArray(size);
+	// printFunc(Array1, size);
 	
 	// int** Array2 = create2DArray(size);
 	// printFunc(Array2, size);
@@ -265,11 +265,33 @@ int main()
 	// int*** C4 = rank3TensorMult(Array3, Array4, size);
 	// print3DFunc(C4, size);
 	
- //  destroy2DArray(Array1, size);
-//    destroy2DArray(Array2, size);
-//    destroy2DArray(C1, size);
-//    destroy2DArray(C2, size);
-	printf("hello world");
+	size = 20;
+
+	// int** Array5 = create2DArray(size);
+	// printFunc(Array5, size);
+	
+	// int** Array6 = create2DArray(size);
+	// printFunc(Array6, size);
+
+	// int** C5 = rank2TensorAdd(Array5, Array6, size);
+	// printFunc(C5, size);
+	
+	// int** C6 = rank2TensorMult(Array5, Array6, size);
+	// printFunc(C6, size);
+
+	int*** Array7 = create3DArray(size);
+	print3DFunc(Array7, size);
+	
+	int*** Array8 = create3DArray(size);
+	print3DFunc(Array8, size);
+
+	int*** C7 = rank3TensorAdd(Array7, Array8, size);
+	print3DFunc(C7, size);
+
+	int*** C8 = rank3TensorMult(Array7, Array8, size);
+	print3DFunc(C8, size);
+
+	
 	
 	return 0;
 }
