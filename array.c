@@ -3,10 +3,6 @@
 #include <time.h>
 #include <math.h>
 
-typedef int bool;
-#define true 1
-#define false 0
-
 int** create2DArray(int dimension)
 {
 	int* values = calloc(dimension*dimension, sizeof(int));
@@ -26,16 +22,19 @@ int** create2DArray(int dimension)
 		}
 	}
 
-	if (error_checking(rows, dimension))
+	if (array_error_checking_2D (rows, dimension))
 	{
 		EXIT_FAILURE;
 	}
 
 	else
+	{
 		return rows;
+	}
+		
 }
 
-int error_checking (int** array, int dimension)
+int array_error_checking_2D (int** array, int dimension)
 {
 	for (int i = 0; i < dimension; i++)
 	{
@@ -83,19 +82,44 @@ int*** create3DArray(int rank)
 			}
 		}
 	}
-	
-return matrix;
 
-}
-
-void destroy2DArray(int** array, int size)
-{
-	for(int i=0; i<size; i++){
-	free(array[i]);
+	if (array_error_checking_3D(matrix, rank))
+	{
+		EXIT_FAILURE;
 	}
-	free(array);
+	
+	else
+	{
+		return matrix;
+	}
 }
 
+int array_error_checking_3D (int*** array, int dimension)
+{
+	for (int k = 0; k < dimension; k++)
+	{
+		for (int i = 0; i < dimension; i++)
+		{
+			for (int j = 0; j < dimension; j++)
+			{
+				if (array[i][j][k] < 0)
+				{
+				fprintf(stderr, "Random number less than 0");
+				return 1;
+				}
+
+				if (array[i][j][k] > 20)
+				{
+				fprintf(stderr, "Random number greater than 20");
+				return 1;
+				}
+			}
+		}
+	}
+	
+	return 0;
+
+}
 
 int** rank2TensorAdd(int** A, int**B, int N)
 {
@@ -240,37 +264,67 @@ int main()
 {
     srand(time(NULL));
     
-	int size = 3;
+	int size = 10;
 
 	int** Array1 = create2DArray(size);
 	printFunc(Array1, size);
 	
-	// int** Array2 = create2DArray(size);
-	// printFunc(Array2, size);
+	int** Array2 = create2DArray(size);
+	printFunc(Array2, size);
 	
-	// int** C1 = rank2TensorAdd(Array1, Array2, size);
-	// printFunc(C1, size);
+	printf("\nN = 10 2D Matrix Addition Result\n");
+	int** C1 = rank2TensorAdd(Array1, Array2, size);
+	printFunc(C1, size);
 	
-	// int** C2 = rank2TensorMult(Array1, Array2, size);
-	// printFunc(C2, size);
+	printf("\nN = 10 2D Matrix Multiplication Result\n");
+	int** C2 = rank2TensorMult(Array1, Array2, size);
+	printFunc(C2, size);
 
-	// int*** Array3 = create3DArray(size);
-	// print3DFunc(Array3, size);
+	int*** Array3 = create3DArray(size);
+	print3DFunc(Array3, size);
 	
-	// int*** Array4 = create3DArray(size);
-	// print3DFunc(Array4, size);
+	int*** Array4 = create3DArray(size);
+	print3DFunc(Array4, size);
 
-	// int*** C3 = rank3TensorAdd(Array3, Array4, size);
-	// print3DFunc(C3, size);
+	printf("\nN = 10 3D Matrix Addition Result\n");
+	int*** C3 = rank3TensorAdd(Array3, Array4, size);
+	print3DFunc(C3, size);
 
-	// int*** C4 = rank3TensorMult(Array3, Array4, size);
-	// print3DFunc(C4, size);
+	printf("\nN = 10 3D Matrix Multiplication Result\n");
+	int*** C4 = rank3TensorMult(Array3, Array4, size);
+	print3DFunc(C4, size);
 	
- //  destroy2DArray(Array1, size);
-//    destroy2DArray(Array2, size);
-//    destroy2DArray(C1, size);
-//    destroy2DArray(C2, size);
-	printf("hello world");
+	size = 20;
+
+	int** Array5 = create2DArray(size);
+	printFunc(Array5, size);
+	
+	int** Array6 = create2DArray(size);
+	printFunc(Array6, size);
+
+	printf("\nN = 20 2D Matrix Addition Result\n");
+	int** C5 = rank2TensorAdd(Array5, Array6, size);
+	printFunc(C5, size);
+	
+	printf("\nN = 20 2D Matrix Multiplication Result\n");
+	int** C6 = rank2TensorMult(Array5, Array6, size);
+	printFunc(C6, size);
+
+	int*** Array7 = create3DArray(size);
+	print3DFunc(Array7, size);
+	
+	int*** Array8 = create3DArray(size);
+	print3DFunc(Array8, size);
+
+	printf("\nN = 20 3D Matrix Addition Result\n");
+	int*** C7 = rank3TensorAdd(Array7, Array8, size);
+	print3DFunc(C7, size);
+
+	printf("\nN = 20 3D Matrix Multiplication Result\n");
+	int*** C8 = rank3TensorMult(Array7, Array8, size);
+	print3DFunc(C8, size);
+
+	
 	
 	return 0;
 }
