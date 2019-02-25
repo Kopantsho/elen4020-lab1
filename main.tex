@@ -11,7 +11,7 @@
 \usepackage{graphicx}
 \usepackage{float}
 \usepackage[]{algpseudocode}
-\usepackage[]{algorithm2e}
+%\usepackage[]{algorithm2e}
 %\usepackage[pdftex]{graphicx}
 
 %\usepackage[final]{pdfpages}
@@ -42,7 +42,7 @@ ELEN4020A: Data Intensive Computing Laboratory Exercise No 1
 \maketitle
 
 \section{Introduction}
-Multidimensional arrays are common data structures in data intensive computing. Operations performed on these give rise to models in fields such as molecular biology and climate modelling [1]. However, performing such operations requires a careful consideration of algorithm efficiency, accuracy and scalability. 
+Multidimensional arrays are common data structures in data intensive computing. Operations performed on these give rise to models in fields such as molecular biology and climate modelling. However, performing such operations requires a careful consideration of algorithm efficiency, accuracy and scalability. 
 \\\\
 This report discusses a study performed on 3 dimensional arrays, otherwise known as 3rd-order tensors. The study employs dynamically allocated $N$ x $N$ x $N$ arrays modelled in the Traditional Matrix Representation (TMR) form and applies matrix addition and multiplication operations to these arrays. The elements of these arrays are randomly generated integers valued between 0 and 20. To test for algorithm scalability, the array bound N is set at 10 and then at 20. Only the multiplication algorithm will be evaluated in this paper. 
 
@@ -69,46 +69,14 @@ The requirements of the 3D multiplication algorithm and its results are:
 \end{itemize}
 
 \subsection{3-Dimensional matrix multiplication algorithm}
-In the design of the multiplication algorithm, the two 3D matrices are modelled as a 3D cube. This cube is then divided into sections with represent the 3 dimensions. This modelled is illustrated in Figure 1.
+In the design of the multiplication algorithm, the two 3D matrices are modelled as a 3D cube. This cube is then divided into sections which represent the 3 dimensions. This modelled is illustrated in Figure 1. All figures can be in the appendix.
 
-\begin{figure}[H]
-\centering
-\includegraphics[width=0.4\textwidth]{MatrixBlock.JPG}% graph
-\caption{Divided 3D Cube}
-\label{fig:1}
-\end{figure}
 
 Since the multiplication is now performed in 3 dimensions, instead of adding the products of row elements with column elements, it is necessary to compute the product of row- and column-planes. These planes are visualised in Figures 2 and 3.
 
-\begin{figure}[H]
-\centering
-\includegraphics[width=0.35\textwidth]{VPlaneBlock.JPG}% graph
-\caption{Row Plane}
-\label{fig:2}
-\end{figure}
-
-\begin{figure}[H]
-\centering
-\includegraphics[width=0.35\textwidth]{MatrixPlane.JPG}% graph
-\caption{Column Plane}
-\label{fig:3}
-\end{figure}
 
 Implementing this extraction of row plane and column planes, proved to be challenging. For this reason a further step was taken to divide the planes into column vectors and row vectors. This could be implemented by extracting elements using their indexed positions. A visual representation of this can be found in Figures 4 and 5.
 
-\begin{figure}[H]
-\centering
-\includegraphics[width=0.35\textwidth]{RowBlock.JPG}% graph
-\caption{Row Block}
-\label{fig:3}
-\end{figure}
-
-\begin{figure}[H]
-\centering
-\includegraphics[width=0.1\textwidth]{ColomnBlock.JPG}% graph
-\caption{Column Block}
-\label{fig:3}
-\end{figure}
 
 Vector multiplication of each column and row block produce a single value, this is the value at the index where the row and column block intersect. For example, if we extracted the top row block and the leftmost column block, the matrix multiplication would be result in a value stored at Block 1 in Figure 1. This process is iterated through until the 3-dimensional result array is found.
 
@@ -127,61 +95,103 @@ This report presents the 3D matrix multiplication algorithm designed, implemente
 
 \begin{algorithmic}
 
-\Function{createArray}{dimension}
+\Function{createArray}{$dimension$}
 
-\For{$i=0$; $i\leq dimension$; i++}
-    \For{$j=0$; $j\leq dimension$; j++}
-        matrix[i][j] = rand() \% 21
+\For{$row=0$;  $row \gets dimension$}
+    \For{$column=0$; $column \gets dimension$}
+        $matrix[row][column] = rand() \% 21$
     \EndFor
 \EndFor
 \EndFunction \\ \\
 
 
-\Function{rank2TensorAdd}{A, B, N}
-\For{$i=0$; $i\leq N$; i++}
-    \For{$j=0$; $j\leq N$; j++}
-        result[i][j] = A[i][j] + B[i][j] 
+\Function{rank2TensorAdd}{$A, B, rank$}
+\For{$row=0$; $row \gets rank$}
+    \For{$column=0$; $column \gets rank$}
+        $result[row][column] = A[row][column] + B[row][column]$ 
     \EndFor
 \EndFor
 \EndFunction \\ \\ 
 
-\Function{rank2TensorMult}{A, B, N}
-\For{$i=0$; $i\leq N$; i++}
-    \For{$j=0$; $j\leq N$; j++}
-        \For{$k=0$; $k\leq N$; k++}
-        result[i][j] = A[i][k] + B[k][j] 
+\Function{rank2TensorMult}{$A, B, rank$}
+\For{$row=0$; $row \gets rank$}
+    \For{$column=0$;  $column \gets rank$}
+        \For{$iterator=0$; $iterator \gets rank$}
+        $result[row][column] += A[row][iterator] + B[iterator][column]$ 
         \EndFor
     \EndFor
 \EndFor
 \EndFunction \\ \\
 
-\Function{printFunc}{matrix,size}
-\For{$i=0$; $i\leq size$; i++}
-    \For{$j=0$; $j\leq size$; j++}
-        print(matrix[i][j])
+\Function{printFunc}{$matrix,size$}
+\For{$row=0$; $row \gets size$}
+    \For{$column=0$;  $column \gets size$}
+        $print(matrix[row][column])$
     \EndFor
 \EndFor
 \EndFunction \\ \\
 
-\Function{rank3TensorMult}{A, B, N}
+\Function{rank3TensorMult}{$A$,$ B$,$rank$}
 
-\For{$i=0$; $i\leq N$; i++}
-    \For{$j=0$; $j\leq N$; j++}
-        \For{$k=0$; $k\leq N$; k++}
-            \For{$l=0$; $l\leq N$; l++}
-                 result[j][k][i] = A[j][l][i] + B[l][k][i] 
+\For{$depth=0$; $depth \gets rank$}
+    \For{$row=0$;  $row \gets rank$}
+        \For{$column=0$; $column \gets rank$}
+            \For{$iterator=0$;  $iterator \gets rank$}
+                 $result[row][column][depth] += A[row][iterator][depth] + B[iterator][column][depth] $
             \EndFor
         \EndFor
     \EndFor
 \EndFor
 
-\EndFunction
+\EndFunction \\ \\ \\ 
+
+\Function{rank2TensorAdd}{$A, B, rank$}
+\For{$depth=0$; $depth \gets rank$}
+    \For{$row=0$;  $row \gets rank$}
+        \For{$column=0$; $column \gets rank$}
+      $$  result[row][column][depth] = A[row][column][depth] + B[row][column][depth] $$
+        \EndFor
+    \EndFor
+\EndFor
+\EndFunction \\ \\
 
 \end{algorithmic}
 
-\begin{algorithm}[H]
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.4\textwidth]{MatrixBlock.JPG}% graph
+\caption{Divided 3D Cube}
+\label{fig:1}
+\end{figure}
 
-\end{algorithm}
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.35\textwidth]{VPlaneBlock.JPG}% graph
+\caption{Row Plane}
+\label{fig:2}
+\end{figure}
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.35\textwidth]{MatrixPlane.JPG}% graph
+\caption{Column Plane}
+\label{fig:3}
+\end{figure}
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.35\textwidth]{RowBlock.JPG}% graph
+\caption{Row Block}
+\label{fig:4}
+\end{figure}
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.1\textwidth]{ColomnBlock.JPG}% graph
+\caption{Column Block}
+\label{fig:5}
+\end{figure}
+
 
 \end{document}
 
