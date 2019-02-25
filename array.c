@@ -3,10 +3,6 @@
 #include <time.h>
 #include <math.h>
 
-typedef int bool;
-#define true 1
-#define false 0
-
 int** create2DArray(int dimension)
 {
 	int* values = calloc(dimension*dimension, sizeof(int));
@@ -32,7 +28,10 @@ int** create2DArray(int dimension)
 	}
 
 	else
+	{
 		return rows;
+	}
+		
 }
 
 int error_checking (int** array, int dimension)
