@@ -22,7 +22,7 @@ int** create2DArray(int dimension)
 		}
 	}
 
-	if (error_checking(rows, dimension))
+	if (array_error_checking_2D (rows, dimension))
 	{
 		EXIT_FAILURE;
 	}
@@ -34,7 +34,7 @@ int** create2DArray(int dimension)
 		
 }
 
-int error_checking (int** array, int dimension)
+int array_error_checking_2D (int** array, int dimension)
 {
 	for (int i = 0; i < dimension; i++)
 	{
@@ -82,19 +82,44 @@ int*** create3DArray(int rank)
 			}
 		}
 	}
-	
-return matrix;
 
-}
-
-void destroy2DArray(int** array, int size)
-{
-	for(int i=0; i<size; i++){
-	free(array[i]);
+	if (array_error_checking_3D(matrix, rank))
+	{
+		EXIT_FAILURE;
 	}
-	free(array);
+	
+	else
+	{
+		return matrix;
+	}
 }
 
+int array_error_checking_3D (int*** array, int dimension)
+{
+	for (int k = 0; k < dimension; k++)
+	{
+		for (int i = 0; i < dimension; i++)
+		{
+			for (int j = 0; j < dimension; j++)
+			{
+				if (array[i][j][k] < 0)
+				{
+				fprintf(stderr, "Random number less than 0");
+				return 1;
+				}
+
+				if (array[i][j][k] > 20)
+				{
+				fprintf(stderr, "Random number greater than 20");
+				return 1;
+				}
+			}
+		}
+	}
+	
+	return 0;
+
+}
 
 int** rank2TensorAdd(int** A, int**B, int N)
 {
