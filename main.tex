@@ -1,0 +1,186 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%2345678901234567890123456789012345678901234567890123456789012345678901234567890
+%        1         2         3         4         5         6         7         8
+
+%\documentclass[letterpaper, 10 pt, conference]{ieeeconf}  % Comment this line out if you need a4paper
+
+\documentclass[a4paper, 11pt, onecolumn, conference]{IEEEtran}      % Use this line for a4 paper
+
+\IEEEoverridecommandlockouts                            %   This command is only needed if 
+ % you want to use the \thanks command
+\usepackage{graphicx}
+\usepackage{float}
+\usepackage[]{algpseudocode}
+%\usepackage[pdftex]{graphicx}
+
+%\usepackage[final]{pdfpages}
+%\usepackage[pdftex]{graphicx}
+%\overrideIEEEmargins                                      % Needed to meet printer requirements.
+
+% See the \addtolength command later in the file to balance the column lengths
+% on the last page of the document
+
+% The following packages can be found on http:\\www.ctan.org
+%\usepackage{graphics} % for pdf, bitmapped graphics files
+%\usepackage{epsfig} % for postscript graphics files
+%\usepackage{mathptmx} % assumes new font selection scheme installed
+%\usepackage{times} % assumes new font selection scheme installed
+%\usepackage{amsmath} % assumes amsmath package installed
+%\usepackage{amssymb}  % assumes amsmath package installed
+
+\title{\LARGE \bf
+ELEN4020A: Data Intensive Computing Laboratory Exercise No 1
+}
+
+\author{ Kopantsho Mathafa (849038)\ \ \ \ \ \ Chizeba Maulu (900968) \ \ \ \ \ \ 25 February 2019\\
+}
+
+
+\begin{document}
+
+\maketitle
+
+\section{Introduction}
+Multidimensional arrays are common data structures in data intensive computing. Operations performed on these give rise to models in fields such as molecular biology and climate modelling [1]. However, performing such operations requires a careful consideration of algorithm efficiency, accuracy and scalability. 
+\\\\
+This report discusses a study performed on 3 dimensional arrays, otherwise known as 3rd-order tensors. The study employs dynamically allocated $N$ x $N$ x $N$ arrays modelled in the Traditional Matrix Representation (TMR) form and applies matrix addition and multiplication operations to these arrays. The elements of these arrays are randomly generated integers valued between 0 and 20. To test for algorithm scalability, the array bound N is set at 10 and then at 20. Only the multiplication algorithm will be evaluated in this paper. 
+
+\section{Background}
+\subsection{Design Parameters and Success Criteria}
+
+The approach employed for the 3-dimensional matrix multiplication algorithm is built upon the canonical 2-dimensional matrix multiplication algorithm. Equation 1 illustrates 2-dimensional matrix multiplication mathematically. 
+
+\begin{equation}
+    c_{ij} = \sum_{k} a_{ik} \times b_{kj}  
+\end{equation}
+Where: $a$, $b$ and $c$ - 2D Matrices and $i$, $j$, and $k$ - indices used to access the matrix elements. 
+\\\\
+Modifications are made to this well-known algorithm to account for the thired dimension in 3D matrices. \\\\
+The TMR form of modelling an array is used. This was used both because of its flaws and merits. It is easier and more intuitive to model an array in TMR form as arrays in C as the array data structure is C is already in TMR form, even though in memory multi-dimensional arrays are stored as arrays of arrays instead of a single multidimensional structures.\\\\
+The flaws of this form is the increase in both the cost of index computation and accessing or modifying the elements as the dimension of an array increases. These drawbacks allow for a better understanding of how algorithm efficiency can address the limitations of this kind of representation of arrays. \\\\
+The requirements of the 3D multiplication algorithm and its results are:
+
+\begin{itemize}
+    \item It must be able to dynamically generate an array of integers.
+    \item It must populate the array with randomly generated numbers between [0,20].
+    \item Must be able to compute the multiplication of two 3-dimensional arrays.
+    \item The program must store the result of the computation in a result matrix C with the correct array bounds in each dimensions, or as C[N][N]][N].
+\end{itemize}
+
+\subsection{3-Dimensional matrix multiplication algorithm}
+In the design of the multiplication algorithm, the two 3D matrices are modelled as a 3D cube. This cube is then divided into sections with represent the 3 dimensions. This modelled is illustrated in Figure 1.
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.4\textwidth]{MatrixBlock.JPG}% graph
+\caption{Divided Cube}
+\label{fig:1}
+\end{figure}
+
+It was realised that it is best to draw from the 2-dimensional matrix multiplication and relate the row of one matrix as horizontal plane of the row and similarly for the coloumn, as a vertical plane of thay coloumn. These can be seen in figures 2 and 3 below.
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.35\textwidth]{VPlaneBlock.JPG}% graph
+\caption{Row Plane}
+\label{fig:2}
+\end{figure}
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.35\textwidth]{MatrixPlane.JPG}% graph
+\caption{Column Plane}
+\label{fig:3}
+\end{figure}
+
+Implementing this extraction of row plane and column planes, proved to be challenging. For this reason a further step was taken to divide the planes into column vectors and row vectors. This could be implemented by extracting elements using their indexed positions. A visual representation of this can be found in figures 4 and 5 below.
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.35\textwidth]{RowBlock.JPG}% graph
+\caption{Row Block}
+\label{fig:3}
+\end{figure}
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.1\textwidth]{ColomnBlock.JPG}% graph
+\caption{Column Block}
+\label{fig:3}
+\end{figure}
+
+Vector multiplication of each column and row block produce a single value, this is the value at the index where the row and column block intersect. For example, if we extracted the top row block and the leftmost column block, the matrix multiplication would be result in a value stored at Block 1 in figure 1. This process is iterated through until the 3-dimensional result array is found.
+
+\section{Critical Analysis and Future Recommendations}
+
+Using the print function, it is possible to see the created matrices as well as the result of the addition and multiplication arithmetic. The 2-dimensional arrays are printed as standard matrices. The 3-dimensional matrices are printed in layers, by extracting horizontal plane surfaces or layers. These layers produce 2-dimensional matrices, which can be printed out as before. The matrices are printed below each other. \\
+
+Verification of the program was done by manually implementing the matrix multiplication for generated matrices and confirming that they match with those calculated by the program. It was found that program correctly computed all four procedures. It also correctly created and populated the arrays and displayed them correctly. All the requirements stated earlier to meet the success criteria were met. 
+The program could have been implemented to utilise parallel computing to make the computational efficiency higher. This could not be implemented due to time constraints. This can be implemented in future projects.
+The program is efficient, with regards to memory management. This is due to the use of \textbf{malloc()} and \textbf{calloc()}, which reserves only the required heap memory. \\
+
+Pseudo code of the different functions can be found in the appendix.
+
+
+\section{Conclusion}
+Presented in this report is the design process used to approach the problem presented in the laboratory brief. The program implemented meets the success criteria specified in the brief. A critical analysis of the program is presented and future recommendations are given to improve the program.
+
+\newpage
+\appendix
+
+\begin{algorithmic}
+
+\Function{createArray}{dimension}
+
+\For{$i=0$; $i\leq dimension$; i++}
+    \For{$j=0$; $j\leq dimension$; j++}
+        matrix[i][j] = rand() \% 21
+    \EndFor
+\EndFor
+\EndFunction \\ \\
+
+
+\Function{rank2TensorAdd}{A, B, N}
+\For{$i=0$; $i\leq N$; i++}
+    \For{$j=0$; $j\leq N$; j++}
+        result[i][j] = A[i][j] + B[i][j] 
+    \EndFor
+\EndFor
+\EndFunction \\ \\ 
+
+\Function{rank2TensorMult}{A, B, N}
+\For{$i=0$; $i\leq N$; i++}
+    \For{$j=0$; $j\leq N$; j++}
+        \For{$k=0$; $k\leq N$; k++}
+        result[i][j] = A[i][k] + B[k][j] 
+        \EndFor
+    \EndFor
+\EndFor
+\EndFunction \\ \\
+
+\Function{printFunc}{matrix,size}
+\For{$i=0$; $i\leq size$; i++}
+    \For{$j=0$; $j\leq size$; j++}
+        print(matrix[i][j])
+    \EndFor
+\EndFor
+\EndFunction
+
+\Function{rank3TensorMult}{A, B, N}
+
+\For{$i=0$; $i\leq N$; i++}
+    \For{$j=0$; $j\leq N$; j++}
+        \For{$k=0$; $k\leq N$; k++}
+            \For{$l=0$; $l\leq N$; l++}
+                 result[j][k][i] = A[j][l][i] + B[l][k][i] 
+            \EndFor
+        \EndFor
+    \EndFor
+\EndFor
+
+\EndFunction
+
+\end{algorithmic}
+
+\end{document}
+
