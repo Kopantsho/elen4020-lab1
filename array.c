@@ -241,43 +241,49 @@ int main()
     
 	int size = 10;
 
-	// int** Array1 = create2DArray(size);
-	// printFunc(Array1, size);
+	int** Array1 = create2DArray(size);
+	printFunc(Array1, size);
 	
-	// int** Array2 = create2DArray(size);
-	// printFunc(Array2, size);
+	int** Array2 = create2DArray(size);
+	printFunc(Array2, size);
 	
-	// int** C1 = rank2TensorAdd(Array1, Array2, size);
-	// printFunc(C1, size);
+	printf("\nN = 10 2D Matrix Addition Result\n");
+	int** C1 = rank2TensorAdd(Array1, Array2, size);
+	printFunc(C1, size);
 	
-	// int** C2 = rank2TensorMult(Array1, Array2, size);
-	// printFunc(C2, size);
+	printf("\nN = 10 2D Matrix Multiplication Result\n");
+	int** C2 = rank2TensorMult(Array1, Array2, size);
+	printFunc(C2, size);
 
-	// int*** Array3 = create3DArray(size);
-	// print3DFunc(Array3, size);
+	int*** Array3 = create3DArray(size);
+	print3DFunc(Array3, size);
 	
-	// int*** Array4 = create3DArray(size);
-	// print3DFunc(Array4, size);
+	int*** Array4 = create3DArray(size);
+	print3DFunc(Array4, size);
 
-	// int*** C3 = rank3TensorAdd(Array3, Array4, size);
-	// print3DFunc(C3, size);
+	printf("\nN = 10 3D Matrix Addition Result\n");
+	int*** C3 = rank3TensorAdd(Array3, Array4, size);
+	print3DFunc(C3, size);
 
-	// int*** C4 = rank3TensorMult(Array3, Array4, size);
-	// print3DFunc(C4, size);
+	printf("\nN = 10 3D Matrix Multiplication Result\n");
+	int*** C4 = rank3TensorMult(Array3, Array4, size);
+	print3DFunc(C4, size);
 	
 	size = 20;
 
-	// int** Array5 = create2DArray(size);
-	// printFunc(Array5, size);
+	int** Array5 = create2DArray(size);
+	printFunc(Array5, size);
 	
-	// int** Array6 = create2DArray(size);
-	// printFunc(Array6, size);
+	int** Array6 = create2DArray(size);
+	printFunc(Array6, size);
 
-	// int** C5 = rank2TensorAdd(Array5, Array6, size);
-	// printFunc(C5, size);
+	printf("\nN = 20 2D Matrix Addition Result\n");
+	int** C5 = rank2TensorAdd(Array5, Array6, size);
+	printFunc(C5, size);
 	
-	// int** C6 = rank2TensorMult(Array5, Array6, size);
-	// printFunc(C6, size);
+	printf("\nN = 20 2D Matrix Multiplication Result\n");
+	int** C6 = rank2TensorMult(Array5, Array6, size);
+	printFunc(C6, size);
 
 	int*** Array7 = create3DArray(size);
 	print3DFunc(Array7, size);
@@ -285,9 +291,11 @@ int main()
 	int*** Array8 = create3DArray(size);
 	print3DFunc(Array8, size);
 
+	printf("\nN = 20 3D Matrix Addition Result\n");
 	int*** C7 = rank3TensorAdd(Array7, Array8, size);
 	print3DFunc(C7, size);
 
+	printf("\nN = 20 3D Matrix Multiplication Result\n");
 	int*** C8 = rank3TensorMult(Array7, Array8, size);
 	print3DFunc(C8, size);
 
